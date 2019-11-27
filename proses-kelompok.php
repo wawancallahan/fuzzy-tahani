@@ -1,6 +1,7 @@
 <?php
 
-function himpunanKeanggotaan($himpunan) {
+function himpunanKeanggotaan($himpunan)
+{
     switch ($himpunan) {
         case 1:
             return "x";
@@ -11,25 +12,27 @@ function himpunanKeanggotaan($himpunan) {
     }
 }
 
-function namaHimpunanKeanggotaan($himpunan, $format = false) {
+function namaHimpunanKeanggotaan($himpunan, $format = false)
+{
     switch ($himpunan) {
         case 1:
             $value = "Umur";
-        break;
+            break;
         case 2:
             $value = "Masa Kerja";
-        break;
+            break;
         case 3:
             $value = "Gaji";
-        break;
+            break;
     }
 
     return $format ? str_replace(" ", "_", strtolower($value)) : $value;
 }
 
-function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
+function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas)
+{
     $value = 0;
-    
+
     switch ($himpunan) {
         case 1:
             switch ($state) {
@@ -41,7 +44,7 @@ function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
                     } else if ($nilai > $atas) {
                         $value = 0;
                     }
-                break;
+                    break;
                 case "parobaya":
                     if ($nilai < $bawah || $nilai > $atas) {
                         $value = 0;
@@ -50,7 +53,7 @@ function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
                     } else if ($nilai > $tengah && $nilai <= $atas) {
                         $value = ($atas - $nilai) / ($atas - $tengah);
                     }
-                break;
+                    break;
                 case "tua":
                     if ($nilai < $bawah) {
                         $value = 0;
@@ -59,9 +62,9 @@ function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
                     } else if ($nilai > $tengah) {
                         $value = 1;
                     }
-                break;
+                    break;
             }
-        break;
+            break;
         case 2:
             switch ($state) {
                 case "baru":
@@ -72,7 +75,7 @@ function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
                     } else if ($nilai > $atas) {
                         $value = 0;
                     }
-                break;
+                    break;
                 case "lama":
                     if ($nilai < $bawah) {
                         $value = 0;
@@ -81,9 +84,9 @@ function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
                     } else if ($nilai > $tengah) {
                         $value = 1;
                     }
-                break;
+                    break;
             }
-        break;
+            break;
         case 3:
             switch ($state) {
                 case "rendah":
@@ -94,7 +97,7 @@ function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
                     } else if ($nilai > $atas) {
                         $value = 0;
                     }
-                break;
+                    break;
                 case "sedang":
                     if ($nilai < $bawah || $nilai > $atas) {
                         $value = 0;
@@ -103,7 +106,7 @@ function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
                     } else if ($nilai > $tengah && $nilai <= $atas) {
                         $value = ($atas - $nilai) / ($atas - $tengah);
                     }
-                break;
+                    break;
                 case "tinggi":
                     if ($nilai < $bawah) {
                         $value = 0;
@@ -112,9 +115,9 @@ function derajatKeanggotaan($himpunan, $state, $nilai, $bawah, $tengah, $atas) {
                     } else if ($nilai > $tengah) {
                         $value = 1;
                     }
-                break;
+                    break;
             }
-        break;
+            break;
     }
 
     return number_format($value, 2, ".", "");
@@ -127,7 +130,7 @@ $id = isset($_POST['id']) ? $_POST['id'] : "";
 
 $content = "";
 
-if (strlen(trim($id)) > 0) { 
+if (strlen(trim($id)) > 0) {
 
     $sql = "SELECT * FROM karyawan";
     $query = mysqli_query($koneksi, $sql);
@@ -154,16 +157,16 @@ if (strlen(trim($id)) > 0) {
             $bawah = $anggota['bawah'];
             $tengah = $anggota['tengah'];
             $atas = $anggota['atas'];
-            
+
             $keanggotaan .= "<td>" . derajatKeanggotaan($id, strtolower($anggota['nama']), $nilaiKaryawan, $bawah, $tengah, $atas) . "</td>";
-        }                    
+        }
 
         $row .= "<tr>" .
-                    "<td>" . $karyawan["nip"] . "</td>" .
-                    "<td>" . $karyawan["nama"] . "</td>" .
-                    "<td>" . number_format($nilaiKaryawan) . "</td>" .
-                    $keanggotaan .
-                "</tr>";
+            "<td>" . $karyawan["nip"] . "</td>" .
+            "<td>" . $karyawan["nama"] . "</td>" .
+            "<td>" . number_format($nilaiKaryawan) . "</td>" .
+            $keanggotaan .
+            "</tr>";
     }
 
     $headAnggota = "";
@@ -173,21 +176,21 @@ if (strlen(trim($id)) > 0) {
     }
 
     $content  = "<table class='table'>" .
-                    "<thead>" .
-                        "<tr>" .
-                            "<th rowspan='2'>NIP</th>" .
-                            "<th rowspan='2'>Nama</th>" .
-                            "<th rowspan='2'>" . namaHimpunanKeanggotaan($id) . "</th>" .
-                            "<th class='text-center' colspan='$rowLength'>Derajat Keanggotaan ( &micro; $himpunan )</th>" .
-                        "</tr>" .
-                        "<tr>" .
-                            $headAnggota .
-                        "</tr>" .
-                    "</thead>" .
-                    "<tbody>" .
-                        $row .
-                    "</tbody>" .
-                "</table>";
+        "<thead>" .
+        "<tr>" .
+        "<th rowspan='2'>NIP</th>" .
+        "<th rowspan='2'>Nama</th>" .
+        "<th rowspan='2'>" . namaHimpunanKeanggotaan($id) . "</th>" .
+        "<th class='text-center' colspan='$rowLength'>Derajat Keanggotaan ( &micro; $himpunan )</th>" .
+        "</tr>" .
+        "<tr>" .
+        $headAnggota .
+        "</tr>" .
+        "</thead>" .
+        "<tbody>" .
+        $row .
+        "</tbody>" .
+        "</table>";
 }
 
 echo json_encode([

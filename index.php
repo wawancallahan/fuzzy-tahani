@@ -1,12 +1,13 @@
 <?php
-    require './koneksi.php';
+require './koneksi.php';
 
-    $sql = "SELECT * FROM kelompok";
-    $query = mysqli_query($koneksi, $sql);
-    $result_kelompok = mysqli_fetch_all($query, MYSQLI_ASSOC);
+$sql = "SELECT * FROM kelompok";
+$query = mysqli_query($koneksi, $sql);
+$result_kelompok = mysqli_fetch_all($query, MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
 
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
 </head>
+
 <body>
 
     <div class="container mt-5">
@@ -29,17 +31,19 @@
                                 <select name="delimeter_nama" id="delimeter_nama" class="form-control">
                                     <option value="=" selected>=</option>
                                     <option value=">=">>=</option>
-                                    <option value="<="><=</option>
-                                    <option value=">">></option>
-                                    <option value="<"><</option>
-                                    <option value="LIKE">LIKE</option>
+                                    <option value="<=">
+                                        <=</option> <option value=">">>
+                                    </option>
+                                    <option value="<">
+                                        <</option> <option value="LIKE">LIKE
+                                    </option>
                                 </select>
                                 <input class="form-control" type="text" name="nama" id="nama">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="col-6">
                 <div class="form-group">
                     <div class="row">
@@ -49,17 +53,19 @@
                                 <select name="delimeter_umur" id="delimeter_umur" class="form-control">
                                     <option value="=" selected>=</option>
                                     <option value=">=">>=</option>
-                                    <option value="<="><=</option>
-                                    <option value=">">></option>
-                                    <option value="<"><</option>
-                                    <option value="LIKE">LIKE</option>
+                                    <option value="<=">
+                                        <=</option> <option value=">">>
+                                    </option>
+                                    <option value="<">
+                                        <</option> <option value="LIKE">LIKE
+                                    </option>
                                 </select>
                                 <input class="form-control" type="text" name="umur" id="umur">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="col-6">
                 <div class="form-group">
                     <div class="row">
@@ -69,17 +75,19 @@
                                 <select name="delimeter_masa_kerja" id="delimeter_masa_kerja" class="form-control">
                                     <option value="=" selected>=</option>
                                     <option value=">=">>=</option>
-                                    <option value="<="><=</option>
-                                    <option value=">">></option>
-                                    <option value="<"><</option>
-                                    <option value="LIKE">LIKE</option>
+                                    <option value="<=">
+                                        <=</option> <option value=">">>
+                                    </option>
+                                    <option value="<">
+                                        <</option> <option value="LIKE">LIKE
+                                    </option>
                                 </select>
                                 <input class="form-control" type="text" name="masa_kerja" id="masa_kerja">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="col-6">
                 <div class="form-group">
                     <div class="row">
@@ -89,21 +97,23 @@
                                 <select name="delimeter_gaji" id="delimeter_gaji" class="form-control">
                                     <option value="=" selected>=</option>
                                     <option value=">=">>=</option>
-                                    <option value="<="><=</option>
-                                    <option value=">">></option>
-                                    <option value="<"><</option>
-                                    <option value="LIKE">LIKE</option>
+                                    <option value="<=">
+                                        <=</option> <option value=">">>
+                                    </option>
+                                    <option value="<">
+                                        <</option> <option value="LIKE">LIKE
+                                    </option>
                                 </select>
                                 <input class="form-control" type="text" name="gaji" id="gaji">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>     
+            </div>
             <div class="col-12">
                 <button type="button" class="btn btn-primary btn-block" id="pencarian">Cari</button>
                 <button type="button" class="btn btn-danger btn-block" id="reset">Reset</button>
-            </div>   
+            </div>
         </div>
 
         <div class="table-responsive">
@@ -162,44 +172,67 @@
 
         </div>
     </div>
-    
+
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/popper.js"></script>
     <script src="./assets/js/bootstrap.min.js"></script>
 
     <script>
-        function fetchData (request = {}) {
+        function fetchData(request = {}) {
             $('#tabel-karyawan').empty();
             $.ajax({
                 url: '/proses.php',
                 type: 'POST',
                 data: request,
                 dataType: 'json'
-            }).then(function (response) {
+            }).then(function(response) {
                 $('#tabel-karyawan').html(response.view);
-            }).fail(function (error) {
+            }).fail(function(error) {
                 console.log(error);
             });
         }
 
-        function fetchDataKelompok (request = {}) {
+        function fetchDataKelompok(request = {}) {
             $('#table-keanggotaan').empty();
             $.ajax({
                 url: '/proses-kelompok.php',
                 type: 'POST',
                 data: request,
                 dataType: 'json'
-            }).then(function (response) {
+            }).then(function(response) {
                 $('#table-keanggotaan').html(response.view);
-            }).fail(function (error) {
+            }).fail(function(error) {
                 console.log(error);
             });
         }
 
-        $(function () {
+        function fetchFungsiKeanggotaan(request = {}) {
+            $('#table-fungsi-keanggotaan').empty();
+            $.ajax({
+                url: '/proses-keanggotaan.php',
+                type: 'POST',
+                data: request,
+                dataType: 'json'
+            }).then(function(response) {
+                console.log(response);
+                $('#table-fungsi-keanggotaan').html(response.view);
+            }).fail(function(error) {
+                console.log(error);
+            });
+        }
+
+        $(function() {
             fetchData();
 
-            $('#pencarian-kelompok').click(function (e) {
+            $('#pencarian-fungsi-keanggotaan').click(function(e) {
+                e.preventDefault();
+
+                fetchFungsiKeanggotaan({
+                    id: $('#fungsi_keanggotaan').val()
+                });
+            });
+
+            $('#pencarian-kelompok').click(function(e) {
                 e.preventDefault();
 
                 fetchDataKelompok({
@@ -207,9 +240,9 @@
                 })
             });
 
-            $('#pencarian').click(function (e) {
+            $('#pencarian').click(function(e) {
                 e.preventDefault();
-                
+
                 fetchData({
                     nama: $('#nama').val(),
                     umur: $('#umur').val(),
@@ -222,7 +255,7 @@
                 });
             });
 
-            $('#reset').click(function (e) {
+            $('#reset').click(function(e) {
                 e.preventDefault();
 
                 fetchData();
@@ -239,4 +272,5 @@
         });
     </script>
 </body>
+
 </html>
